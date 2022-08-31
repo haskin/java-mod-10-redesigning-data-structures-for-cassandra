@@ -1,31 +1,43 @@
 package com.example.deck;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-public class Card implements Serializable {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.CassandraType.Name;
 
+// @Entity
+@Table
+public class Card implements Serializable {
+    // @Id
+    // @GeneratedValue(strategy=GenerationType.IDENTITY)
+
+    // private Long id;
+
+    @PrimaryKey
+    @CassandraType(type = Name.UUID)
     private UUID uuid;
 
     private String name;
     private String suit;
     private Long deckNumber;
 
-    // Should use OneToOne in theory. There is a bug preventing for this specific implementation however.
-    @OneToMany(mappedBy = "card")
+    // Should use OneToOne in theory. There is a bug preventing for this specific
+    // implementation however.
+    // @OneToMany(mappedBy = "card")
+    @CassandraType(type = Name.SET)
     private List<Deck> deckList;
 
-    @ManyToOne
-    @JoinColumn(name="name", referencedColumnName="name", insertable=false, updatable=false)
+    // @ManyToOne
+    // @JoinColumn(name="name", referencedColumnName="name", insertable=false,
+    // updatable=false)
     private Value value;
 
-    protected Card() {}
+    protected Card() {
+    }
 
     public Card(UUID uuid, String name, String suit, Long deckNumber) {
         setUUID(uuid);

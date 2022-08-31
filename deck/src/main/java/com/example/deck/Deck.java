@@ -1,24 +1,37 @@
 package com.example.deck;
 
-import javax.persistence.*;
+import org.springframework.data.cassandra.core.mapping.CassandraType;
+
+// import javax.persistence.*;
+
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.CassandraType.Name;
+
 import java.util.UUID;
 
-@Entity
+// @Entity
+@Table
 public class Deck {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @PrimaryKey
     private Long id;
 
     private UUID uuid;
 
     private Long position;
 
-    // Should use OneToOne in theory. There is a bug preventing for this specific implementation however.
-    @ManyToOne
-    @JoinColumn(name="uuid", referencedColumnName="uuid", insertable=false, updatable=false)
+    // Should use OneToOne in theory. There is a bug preventing for this specific
+    // implementation however.
+    // @ManyToOne
+    // @JoinColumn(name = "uuid", referencedColumnName = "uuid", insertable = false,
+    // updatable = false)
+    @CassandraType(type = Name.UUID)
     private Card card;
 
-    protected Deck() {}
+    protected Deck() {
+    }
 
     public Deck(Card card, Long position) {
         setCard(card);
@@ -50,7 +63,3 @@ public class Deck {
         this.uuid = uuid;
     }
 }
-
-
-
-
