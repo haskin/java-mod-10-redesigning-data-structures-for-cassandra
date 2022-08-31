@@ -13,10 +13,10 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 @Table
 public class Deck {
-    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
-    private UUID uuid;
+    // @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
+    // private UUID uuid;
 
-    @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.CLUSTERED)
+    @PrimaryKeyColumn(ordinal = 0, type = PrimaryKeyType.PARTITIONED)
     private Long position;
 
     // Should use OneToOne in theory. There is a bug preventing for this specific
@@ -50,7 +50,7 @@ public class Deck {
     }
 
     public Deck(Card card, Long position) {
-        this.uuid = UUID.randomUUID();
+        // this.uuid = UUID.randomUUID();
         setCardName(card.getName());
         setPoints(card.getPoints());
         setSuit(card.getSuit());
@@ -65,13 +65,13 @@ public class Deck {
         this.position = position;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
+    // public UUID getUuid() {
+    // return uuid;
+    // }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
+    // public void setUuid(UUID uuid) {
+    // this.uuid = uuid;
+    // }
 
     public String getSuit() {
         return suit;

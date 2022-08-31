@@ -13,6 +13,8 @@ import static java.util.UUID.randomUUID;
 @RestController
 public class DeckController {
 
+    private Long positionCounter = 1L;
+
     @Autowired
     private DeckRepository deckRepository;
 
@@ -100,7 +102,9 @@ public class DeckController {
     @GetMapping("/deal")
     public String dealCard() {
 
-        Deck deckItem = deckRepository.findFirstByOrderByPositionDesc().orElseGet(null);
+        // Deck deckItem =
+        // deckRepository.findFirstByOrderByPositionDesc().orElseGet(null);
+        Deck deckItem = deckRepository.findByPosition(positionCounter++).orElseGet(null);
         deckRepository.delete(deckItem);
 
         return String.format("Dealt %s of %s: Worth %s points.", deckItem.getCardName(),

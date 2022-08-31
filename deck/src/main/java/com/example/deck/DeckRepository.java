@@ -6,7 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface DeckRepository extends CassandraRepository<Deck, Long> {
+    Optional<Deck> findByPosition(Long position);
+
     Optional<Deck> findFirstByOrderByPositionDesc();
 
-    // Deck findFirstByPositionIsNotNullOrderByPosition();
+    Deck findFirstByPositionIsNotNullOrderByPosition();
 }
