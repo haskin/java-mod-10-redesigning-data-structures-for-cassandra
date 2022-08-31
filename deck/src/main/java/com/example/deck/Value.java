@@ -1,26 +1,35 @@
 package com.example.deck;
 
-import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
+
+@Table
 public class Value implements Serializable {
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Long id;
+    // @Id
+    // @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // @PrimaryKey
+    private UUID id;
 
+    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
     private String name;
     private Long points;
 
-    @OneToMany(mappedBy = "value")
-    private List<Card> cardList;
+    // @OneToMany(mappedBy = "value")
+    // private List<Card> cardList;
 
-    protected Value() {}
+    protected Value() {
+    }
 
     public Value(String name, Long points) {
         setName(name);
         setPoints(points);
+        this.id = UUID.randomUUID();
     }
 
     public String getName() {
