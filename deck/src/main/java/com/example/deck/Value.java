@@ -1,28 +1,27 @@
 package com.example.deck;
 
-// import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.UUID;
 
-import org.springframework.data.cassandra.core.mapping.CassandraType;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
-import org.springframework.data.cassandra.core.mapping.CassandraType.Name;
 
-// @Entity
 @Table
 public class Value implements Serializable {
     // @Id
     // @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @PrimaryKey
-    private Long id;
+    // @PrimaryKey
+    private UUID id;
 
+    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
     private String name;
     private Long points;
 
     // @OneToMany(mappedBy = "value")
-    @CassandraType(type = Name.SET)
-    private List<Card> cardList;
+    // private List<Card> cardList;
 
     protected Value() {
     }
@@ -30,6 +29,7 @@ public class Value implements Serializable {
     public Value(String name, Long points) {
         setName(name);
         setPoints(points);
+        this.id = UUID.randomUUID();
     }
 
     public String getName() {

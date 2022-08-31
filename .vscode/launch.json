@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-DeckApplication<deck>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.example.deck.DeckApplication",
+      "projectName": "deck",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

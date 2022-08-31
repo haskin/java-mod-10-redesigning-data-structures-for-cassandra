@@ -13,6 +13,8 @@ import static java.util.UUID.randomUUID;
 @RestController
 public class DeckController {
 
+    private Long positionCounter = 1L;
+
     @Autowired
     private DeckRepository deckRepository;
 
@@ -21,6 +23,9 @@ public class DeckController {
 
     @Autowired
     private ValueRepository valueRepository;
+
+    @Autowired
+    private ValueService valueService;
 
     @GetMapping("/new")
     public String newDeck(@RequestParam(value = "decks", defaultValue = "1") Long decks) {
@@ -52,7 +57,10 @@ public class DeckController {
             for (String suit : suits) {
                 for (String name : names) {
                     UUID uuid = randomUUID();
-                    cardRepository.save(new Card(uuid, name, suit, deck));
+                    Card card = new Card(uuid, name, suit, deck);
+                    Value value = valueService.getValueByName(name);
+                    card.setPoints(value.getPoints());
+                    cardRepository.save(card);
                 }
             }
         }
@@ -94,11 +102,14 @@ public class DeckController {
     @GetMapping("/deal")
     public String dealCard() {
 
-        Deck deckItem = deckRepository.findFirstByOrderByPositionDesc().orElseGet(null);
+        // Deck deckItem =
+        // deckRepository.findFirstByOrderByPositionDesc().orElseGet(null);
+        Deck deckItem = deckRepository.findByPosition(positionCounter++).orElseGet(null);
         deckRepository.delete(deckItem);
 
-        return String.format("Dealt %s of %s: Worth %s points.", deckItem.getCard().getName(), deckItem.getCard().getSuit(),
-                            deckItem.getCard().getValue().getPoints());
+        return String.format("Dealt %s of %s: Worth %s points.", deckItem.getCardName(),
+                deckItem.getSuit(),
+                deckItem.getPoints());
     }
 
 }

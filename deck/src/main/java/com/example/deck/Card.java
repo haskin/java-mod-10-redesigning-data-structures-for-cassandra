@@ -1,24 +1,17 @@
 package com.example.deck;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.cassandra.core.mapping.CassandraType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
-import org.springframework.data.cassandra.core.mapping.CassandraType.Name;
 
-// @Entity
 @Table
 public class Card implements Serializable {
-    // @Id
-    // @GeneratedValue(strategy=GenerationType.IDENTITY)
-
-    // private Long id;
-
-    @PrimaryKey
-    @CassandraType(type = Name.UUID)
+    @Id
+    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
     private UUID uuid;
 
     private String name;
@@ -28,13 +21,14 @@ public class Card implements Serializable {
     // Should use OneToOne in theory. There is a bug preventing for this specific
     // implementation however.
     // @OneToMany(mappedBy = "card")
-    @CassandraType(type = Name.SET)
-    private List<Deck> deckList;
+    // private List<Deck> deckList;
 
     // @ManyToOne
-    // @JoinColumn(name="name", referencedColumnName="name", insertable=false,
-    // updatable=false)
-    private Value value;
+    // @JoinColumn(name = "name", referencedColumnName = "name", insertable = false,
+    // updatable = false)
+    // private Value value;
+
+    private Long points;
 
     protected Card() {
     }
@@ -78,8 +72,12 @@ public class Card implements Serializable {
         this.deckNumber = deckNumber;
     }
 
-    public Value getValue() {
-        return this.value;
+    public Long getPoints() {
+        return points;
+    }
+
+    public void setPoints(Long points) {
+        this.points = points;
     }
 
 }
