@@ -12,7 +12,6 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
 @Table
-@Table
 public class Deck {
     // @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
     // private UUID uuid;
