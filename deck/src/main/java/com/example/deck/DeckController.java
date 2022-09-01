@@ -96,6 +96,8 @@ public class DeckController {
             deckItem.setPosition(orderItr.next());
             deckRepository.save(deckItem);
         }
+        // Position counter reset
+        positionCounter = 1L;
         return "Deck shuffled.";
     }
 
